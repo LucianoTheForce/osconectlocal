@@ -4,10 +4,29 @@ workflows:
     environment:
       xcode: latest
       cocoapods: default
+      vars:
+        BUNDLE_ID: "com.lucianotheforce.OsConectLocalApp"
+        XCODE_SCHEME: "OsConectLocalApp"
     scripts:
-      - name: Build Swift Package
+      - name: Build and archive iOS app
         script: |
-          xcodebuild build -scheme OsConectLocalApp -destination 'platform=iOS Simulator,name=iPhone 12'
+          xcodebuild clean archive \
+            -scheme "$XCODE_SCHEME" \
+            -sdk iphoneos \
+            -archivePath $CM_BUILD_DIR/OsConectLocalApp.xcarchive
+      - name: Export IPA
+        script: |
+          xcodebuild -exportArchive \
+            -archivePath $CM_BUILD_DIR/OsConectLocalApp.xcarchive \
+            -exportOptionsPlist exportOptions.plist \
+            -exportPath $CM_BUILD_DIR/ipa
     artifacts:
+      - build/ios/ipa/*.ipa
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true

@@ -22,7 +22,8 @@ OsConectLocal/
 │       └── OsConectLocalAppTests.swift
 ├── Package.swift           # Configuração do pacote Swift
 ├── README.md               # Este arquivo
-└── codemagic.yaml          # Configuração do Codemagic CI/CD
+├── codemagic.yaml          # Configuração do Codemagic CI/CD
+└── exportOptions.plist     # Opções de exportação para TestFlight
 ```
 
 ## Configuração do Projeto
@@ -48,33 +49,34 @@ Este projeto é uma aplicação SwiftUI que utiliza o Swift Package Manager para
 1. Selecione "My Mac" como o destino de execução.
 2. Execute o projeto no Xcode (Command + R).
 
-## Construindo com Codemagic
+## Distribuição via TestFlight
 
-Este projeto está configurado para ser construído usando Codemagic CI/CD. O arquivo `codemagic.yaml` na raiz do projeto contém a configuração necessária para o processo de build.
+Para distribuir o app via TestFlight usando Codemagic, siga estas etapas:
 
-Para usar o Codemagic:
+1. Certifique-se de ter uma conta de desenvolvedor Apple e acesso ao App Store Connect.
 
-1. Faça login na sua conta Codemagic (https://codemagic.io/).
-2. Adicione este projeto ao Codemagic.
-3. O Codemagic detectará automaticamente o arquivo `codemagic.yaml` e usará a configuração nele definida.
-4. Inicie uma nova build no Codemagic.
+2. No App Store Connect:
+   - Crie um novo app com o bundle ID "com.lucianotheforce.OsConectLocalApp".
+   - Obtenha as credenciais necessárias para a API do App Store Connect (chave privada, key ID e issuer ID).
 
-Se você encontrar problemas durante o processo de build no Codemagic, verifique se:
+3. No Codemagic:
+   - Vá para as configurações do seu app.
+   - Na seção "Environment variables", adicione as seguintes variáveis secretas:
+     - APP_STORE_CONNECT_PRIVATE_KEY
+     - APP_STORE_CONNECT_KEY_IDENTIFIER
+     - APP_STORE_CONNECT_ISSUER_ID
+   - Preencha com os valores obtidos no App Store Connect.
 
-- O arquivo `codemagic.yaml` está corretamente configurado.
-- O arquivo `Package.swift` está presente na raiz do projeto e corretamente configurado.
-- Todas as dependências do projeto estão corretamente listadas no `Package.swift`.
+4. No arquivo `exportOptions.plist`:
+   - Substitua "YOUR_TEAM_ID" pelo seu Apple Developer Team ID.
 
-## Conexão com o Servidor WebSocket
+5. Faça commit das alterações e push para o repositório GitHub.
 
-O aplicativo se conecta a um servidor WebSocket para receber mensagens que são convertidas em OSC. O servidor WebSocket está localizado em "wss://websocket-luciano15.replit.app".
+6. No Codemagic, inicie uma nova build.
 
-## Arquivos principais
+7. Após a conclusão bem-sucedida da build, o app será enviado automaticamente para o TestFlight.
 
-1. `Sources/OsConectLocalApp/OsConectLocalApp.swift`: Arquivo principal SwiftUI que define a estrutura da aplicação.
-2. `Sources/OsConectLocalApp/ContentView.swift`: Define a interface do usuário principal do aplicativo.
-3. `Sources/OsConectLocalApp/OsConectLocal.swift`: Contém a lógica específica do OsConectLocal, incluindo a conexão WebSocket e o envio de mensagens OSC.
-4. `Package.swift`: Define a configuração do pacote Swift para o projeto.
+8. No App Store Connect, você poderá gerenciar a distribuição do TestFlight e convidar testadores.
 
 ## Observações
 
@@ -83,6 +85,6 @@ O aplicativo se conecta a um servidor WebSocket para receber mensagens que são 
 - O aplicativo exibe o status da conexão e a última mensagem recebida.
 - Os botões "Connect" e "Disconnect" permitem controlar a conexão WebSocket.
 
-Se você encontrar problemas durante a compilação ou execução do projeto, verifique se todas as dependências estão instaladas corretamente e se o ambiente de desenvolvimento está configurado adequadamente para SwiftUI e Network Framework.
+Se você encontrar problemas durante a compilação, execução do projeto ou distribuição via TestFlight, verifique se todas as dependências estão instaladas corretamente e se o ambiente de desenvolvimento está configurado adequadamente para SwiftUI e Network Framework.
 
-Se você tiver alguma dúvida ou precisar de ajuda, consulte a documentação do SwiftUI, Network Framework, Codemagic ou entre em contato com o desenvolvedor.
+Se você tiver alguma dúvida ou precisar de ajuda, consulte a documentação do SwiftUI, Network Framework, Codemagic, TestFlight ou entre em contato com o desenvolvedor.
