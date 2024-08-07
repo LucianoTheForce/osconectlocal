@@ -17,9 +17,11 @@ let package = Package(
     targets: [
         .target(
             name: "OsConectLocalApp",
-            dependencies: []),
+            dependencies: [],
+            path: "Sources/OsConectLocalApp"),
         .testTarget(
             name: "OsConectLocalAppTests",
-            dependencies: ["OsConectLocalApp"]),
+            dependencies: ["OsConectLocalApp"],
+            path: "Tests/OsConectLocalAppTests"),
     ]
 )
