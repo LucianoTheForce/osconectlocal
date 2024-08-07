@@ -1,11 +1,12 @@
 # OsConectLocal App
 
-Este projeto contém os arquivos necessários para executar o OsConectLocal App no seu iPad, que serve como uma ponte entre um WebSocket e mensagens MIDI para uso com o AUM.
+Este projeto contém os arquivos necessários para executar o OsConectLocal App, que serve como uma ponte entre um WebSocket e mensagens OSC.
 
 ## Requisitos do Sistema
 
 - iOS 14.0 ou superior
 - macOS 11.0 ou superior
+- Xcode 12.0 ou superior
 
 ## Estrutura do Projeto
 
@@ -18,8 +19,7 @@ OsConectLocal/
 │       └── OsConectLocalApp.swift
 ├── Tests/
 │   └── OsConectLocalAppTests/ # Pasta contendo os arquivos de teste
-│       ├── Info.plist
-│       └── OsConectLocalAppTests.m
+│       └── OsConectLocalAppTests.swift
 ├── Package.swift           # Configuração do pacote Swift
 ├── README.md               # Este arquivo
 └── codemagic.yaml          # Configuração do Codemagic CI/CD
@@ -67,7 +67,7 @@ Se você encontrar problemas durante o processo de build no Codemagic, verifique
 
 ## Conexão com o Servidor WebSocket
 
-O aplicativo se conecta a um servidor WebSocket para receber mensagens que são convertidas em MIDI. O servidor WebSocket está localizado em "wss://websocket-luciano15.replit.app".
+O aplicativo se conecta a um servidor WebSocket para receber mensagens que são convertidas em OSC. O servidor WebSocket está localizado em "wss://websocket-luciano15.replit.app".
 
 ## Arquivos principais
 
