@@ -1,6 +1,7 @@
 import Foundation
 import Network
 
+@available(iOS 14.0, macOS 11.0, *)
 class OsConectLocal: ObservableObject {
     @Published var connectionStatus = "Disconnected"
     @Published var lastMessage = ""
@@ -10,7 +11,7 @@ class OsConectLocal: ObservableObject {
     private let websocketUrl = URL(string: "wss://websocket-luciano15.replit.app")!
     
     private let oscHost = "127.0.0.1"
-    private let oscPort: UInt16 = 12000
+    private let oscPort = 8000
     private var oscConnection: NWConnection?
     
     func connect() {
@@ -21,13 +22,14 @@ class OsConectLocal: ObservableObject {
         isConnected = true
         connectionStatus = "Connected"
         
-        setupOSCConnection()
         receiveMessage()
+        setupOSCConnection()
     }
     
     func disconnect() {
         webSocketTask?.cancel(with: .normalClosure, reason: nil)
         oscConnection?.cancel()
+        
         isConnected = false
         connectionStatus = "Disconnected"
     }
@@ -42,24 +44,24 @@ class OsConectLocal: ObservableObject {
             case .success(let message):
                 switch message {
                 case .string(let text):
-                    DispatchQueue.main.async {
-                        self?.lastMessage = text
-                        self?.sendOSCMessage(text)
-                    }
+                    print("Received string: \(text)")
+                    self?.lastMessage = text
+                    // Here you would parse the message and send it as OSC
+                    self?.sendOSCMessage(text)
                 case .data(let data):
-                    print("Received binary message: \(data)")
+                    print("Received data: \(data)")
                 @unknown default:
-                    print("Unknown message type received")
+                    break
                 }
                 
-                self?.receiveMessage() // Continue receiving messages
+                self?.receiveMessage()
             }
         }
     }
     
     private func setupOSCConnection() {
         let host = NWEndpoint.Host(oscHost)
-        let port = NWEndpoint.Port(integerLiteral: oscPort)
+        let port = NWEndpoint.Port(integerLiteral: UInt16(oscPort))
         oscConnection = NWConnection(host: host, port: port, using: .udp)
         
         oscConnection?.stateUpdateHandler = { state in
@@ -67,7 +69,7 @@ class OsConectLocal: ObservableObject {
             case .ready:
                 print("OSC connection ready")
             case .failed(let error):
-                print("OSC connection failed: \(error)")
+                print("OSC connection failed with error: \(error)")
             default:
                 break
             }
@@ -77,29 +79,8 @@ class OsConectLocal: ObservableObject {
     }
     
     private func sendOSCMessage(_ message: String) {
-        let oscAddress = "/message"
-        var oscMessage = Data()
-        
-        // OSC Address
-        oscMessage.append(oscAddress.data(using: .utf8)!)
-        oscMessage.append(0) // Null terminator
-        while oscMessage.count % 4 != 0 {
-            oscMessage.append(0) // Padding
-        }
-        
-        // Type tag string
-        oscMessage.append(",s".data(using: .utf8)!)
-        oscMessage.append(0) // Null terminator
-        while oscMessage.count % 4 != 0 {
-            oscMessage.append(0) // Padding
-        }
-        
-        // OSC Argument (the message)
-        oscMessage.append(message.data(using: .utf8)!)
-        oscMessage.append(0) // Null terminator
-        while oscMessage.count % 4 != 0 {
-            oscMessage.append(0) // Padding
-        }
+        // Here you would construct your OSC message based on the received WebSocket message
+        let oscMessage = "/example/path \(message)".data(using: .utf8)
         
         oscConnection?.send(content: oscMessage, completion: .contentProcessed({ error in
             if let error = error {

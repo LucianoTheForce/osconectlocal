@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ContentView: View {
     @StateObject private var osConnect = OsConectLocal()
     
@@ -30,6 +31,7 @@ struct ContentView: View {
     }
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

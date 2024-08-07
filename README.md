@@ -2,6 +2,11 @@
 
 Este projeto contém os arquivos necessários para executar o OsConectLocal App no seu iPad, que serve como uma ponte entre um WebSocket e mensagens MIDI para uso com o AUM.
 
+## Requisitos do Sistema
+
+- iOS 14.0 ou superior
+- macOS 11.0 ou superior
+
 ## Estrutura do Projeto
 
 ```
@@ -15,37 +20,33 @@ OsConectLocal/
 │   └── OsConectLocalAppTests/ # Pasta contendo os arquivos de teste
 │       ├── Info.plist
 │       └── OsConectLocalAppTests.m
-├── ios/                    # Pasta contendo arquivos específicos do iOS
-├── App.js                  # Arquivo principal do React Native
-├── package.json            # Configuração e dependências do npm
 ├── Package.swift           # Configuração do pacote Swift
-├── codemagic.yaml          # Configuração do Codemagic CI/CD
-└── README.md               # Este arquivo
+├── README.md               # Este arquivo
+└── codemagic.yaml          # Configuração do Codemagic CI/CD
 ```
 
 ## Configuração do Projeto
 
-Este projeto é uma aplicação React Native com componentes Swift adicionais. Siga estas etapas para configurar e executar o projeto:
+Este projeto é uma aplicação SwiftUI que utiliza o Swift Package Manager para gerenciamento de dependências. Siga estas etapas para configurar e executar o projeto:
 
-1. Certifique-se de ter o Node.js e o npm instalados em seu sistema.
-2. Instale o React Native CLI globalmente:
-   ```
-   npm install -g react-native-cli
-   ```
-3. Na pasta raiz do projeto, instale as dependências:
-   ```
-   npm install
-   ```
+1. Certifique-se de ter o Xcode 12.0 ou superior instalado em seu Mac.
+2. Clone este repositório para sua máquina local.
+3. Abra o arquivo `Package.swift` no Xcode.
+4. Aguarde o Xcode resolver as dependências do pacote.
+5. Selecione o esquema de destino apropriado (iOS ou macOS).
+6. Execute o projeto (Command + R).
 
 ## Executando o Projeto
 
 ### Para iOS:
 
-1. Certifique-se de ter o Xcode instalado em seu Mac.
-2. Navegue até a pasta do projeto e execute:
-   ```
-   npx react-native run-ios
-   ```
+1. Selecione um simulador iOS ou um dispositivo iOS conectado.
+2. Execute o projeto no Xcode (Command + R).
+
+### Para macOS:
+
+1. Selecione "My Mac" como o destino de execução.
+2. Execute o projeto no Xcode (Command + R).
 
 ## Construindo com Codemagic
 
@@ -62,8 +63,7 @@ Se você encontrar problemas durante o processo de build no Codemagic, verifique
 
 - O arquivo `codemagic.yaml` está corretamente configurado.
 - O arquivo `Package.swift` está presente na raiz do projeto e corretamente configurado.
-- Todas as dependências do projeto estão corretamente listadas no `package.json`.
-- O arquivo `ios/Podfile` existe e está corretamente configurado.
+- Todas as dependências do projeto estão corretamente listadas no `Package.swift`.
 
 ## Conexão com o Servidor WebSocket
 
@@ -71,22 +71,18 @@ O aplicativo se conecta a um servidor WebSocket para receber mensagens que são 
 
 ## Arquivos principais
 
-1. `App.js`: Arquivo principal do React Native.
-2. `Sources/OsConectLocalApp/OsConectLocalApp.swift`: Arquivo principal Swift que define a estrutura da aplicação SwiftUI.
-3. `Sources/OsConectLocalApp/ContentView.swift`: Define a interface do usuário principal do aplicativo.
-4. `Sources/OsConectLocalApp/OsConectLocal.swift`: Contém a lógica específica do OsConectLocal.
-5. `Package.swift`: Define a configuração do pacote Swift para o projeto.
-6. `Tests/OsConectLocalAppTests/OsConectLocalAppTests.m`: Contém os testes unitários para o aplicativo.
+1. `Sources/OsConectLocalApp/OsConectLocalApp.swift`: Arquivo principal SwiftUI que define a estrutura da aplicação.
+2. `Sources/OsConectLocalApp/ContentView.swift`: Define a interface do usuário principal do aplicativo.
+3. `Sources/OsConectLocalApp/OsConectLocal.swift`: Contém a lógica específica do OsConectLocal, incluindo a conexão WebSocket e o envio de mensagens OSC.
+4. `Package.swift`: Define a configuração do pacote Swift para o projeto.
 
 ## Observações
 
-- O aplicativo cria um MIDI output virtual chamado "OsConectLocal MIDI".
-- As mensagens recebidas pelo WebSocket são convertidas em mensagens MIDI:
-  - Mensagens de faders são convertidas em Control Change (CC) messages.
-  - Mensagens de notas são convertidas em Note On messages.
-- Os valores dos faders são mapeados de 0-100 para o range MIDI de 0-127.
-- Os números dos faders (1-8) são usados diretamente como números de CC.
+- O aplicativo cria uma conexão WebSocket com "wss://websocket-luciano15.replit.app".
+- As mensagens recebidas pelo WebSocket são convertidas em mensagens OSC e enviadas para o endereço IP local (127.0.0.1) na porta 8000.
+- O aplicativo exibe o status da conexão e a última mensagem recebida.
+- Os botões "Connect" e "Disconnect" permitem controlar a conexão WebSocket.
 
-Se você encontrar problemas durante a compilação ou execução do projeto, verifique se todas as dependências estão instaladas corretamente e se o ambiente de desenvolvimento está configurado adequadamente para React Native e Swift.
+Se você encontrar problemas durante a compilação ou execução do projeto, verifique se todas as dependências estão instaladas corretamente e se o ambiente de desenvolvimento está configurado adequadamente para SwiftUI e Network Framework.
 
-Se você tiver alguma dúvida ou precisar de ajuda, consulte a documentação do React Native, Swift, Codemagic ou entre em contato com o desenvolvedor.
+Se você tiver alguma dúvida ou precisar de ajuda, consulte a documentação do SwiftUI, Network Framework, Codemagic ou entre em contato com o desenvolvedor.
