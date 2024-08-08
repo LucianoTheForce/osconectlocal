@@ -22,6 +22,9 @@ workflows:
       - name: Debug exportOptions.plist
         script: |
           cat exportOptions.plist
+      - name: Verify archive
+        script: |
+          ls -R $CM_BUILD_DIR/OsConectLocalApp.xcarchive
       - name: Export IPA
         script: |
           xcodebuild -exportArchive \
