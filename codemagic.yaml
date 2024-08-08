@@ -35,7 +35,6 @@ workflows:
             -exportOptionsPlist exportOptions.plist \
             -exportPath $CM_BUILD_DIR/ipa \
             -allowProvisioningUpdates \
-            -exportMethod app-store \
             -verbose
     artifacts:
       - build/ios/ipa/*.ipa
