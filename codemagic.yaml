@@ -8,12 +8,15 @@ workflows:
         BUNDLE_ID: "com.lucianotheforce.OsConectLocalApp"
         XCODE_SCHEME: "OsConectLocalApp"
     scripts:
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
       - name: Build and archive iOS app
         script: |
           xcodebuild clean archive \
             -scheme "$XCODE_SCHEME" \
             -sdk iphoneos \
-            -destination 'generic/platform=iOS' \
+            -configuration Release \
             -archivePath $CM_BUILD_DIR/OsConectLocalApp.xcarchive
       - name: Export IPA
         script: |
