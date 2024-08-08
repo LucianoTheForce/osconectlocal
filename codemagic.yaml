@@ -19,13 +19,17 @@ workflows:
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath $CM_BUILD_DIR/OsConectLocalApp.xcarchive
+      - name: Debug exportOptions.plist
+        script: |
+          cat exportOptions.plist
       - name: Export IPA
         script: |
           xcodebuild -exportArchive \
             -archivePath $CM_BUILD_DIR/OsConectLocalApp.xcarchive \
             -exportOptionsPlist exportOptions.plist \
             -exportPath $CM_BUILD_DIR/ipa \
-            -allowProvisioningUpdates
+            -allowProvisioningUpdates \
+            -verbose
     artifacts:
       - build/ios/ipa/*.ipa
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
