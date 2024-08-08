@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>method</key>
-    <string>app-store</string>
+    <dict/>
     <key>teamID</key>
     <string>RBN6K9DV42</string>
     <key>signingStyle</key>
@@ -16,5 +16,7 @@
     <true/>
     <key>compileBitcode</key>
     <false/>
+    <key>destination</key>
+    <string>export</string>
 </dict>
 </plist>
