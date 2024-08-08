@@ -13,6 +13,7 @@ workflows:
           xcodebuild clean archive \
             -scheme "$XCODE_SCHEME" \
             -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
             -archivePath $CM_BUILD_DIR/OsConectLocalApp.xcarchive
       - name: Export IPA
         script: |
