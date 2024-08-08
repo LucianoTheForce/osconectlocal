@@ -25,6 +25,9 @@ workflows:
       - name: Verify archive
         script: |
           ls -R $CM_BUILD_DIR/OsConectLocalApp.xcarchive
+      - name: Check Xcode version
+        script: |
+          xcodebuild -version
       - name: Export IPA
         script: |
           xcodebuild -exportArchive \
