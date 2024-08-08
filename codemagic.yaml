@@ -17,6 +17,7 @@ workflows:
             -scheme "$XCODE_SCHEME" \
             -sdk iphoneos \
             -configuration Release \
+            -destination 'generic/platform=iOS' \
             -archivePath $CM_BUILD_DIR/OsConectLocalApp.xcarchive
       - name: Export IPA
         script: |
