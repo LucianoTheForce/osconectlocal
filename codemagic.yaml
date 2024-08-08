@@ -20,7 +20,8 @@ workflows:
           xcodebuild -exportArchive \
             -archivePath $CM_BUILD_DIR/OsConectLocalApp.xcarchive \
             -exportOptionsPlist exportOptions.plist \
-            -exportPath $CM_BUILD_DIR/ipa
+            -exportPath $CM_BUILD_DIR/ipa \
+            -allowProvisioningUpdates
     artifacts:
       - build/ios/ipa/*.ipa
       - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
